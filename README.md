@@ -7,7 +7,7 @@
 ![MITRE ATT&CK](https://img.shields.io/badge/MITRE-ATT%26CK-red?style=for-the-badge)
 ![VirusTotal](https://img.shields.io/badge/VirusTotal-Hash%20Analysis-394EFF?style=for-the-badge)
 
-A hands-on Sysmon investigation lab where I simulated a realistic attack chain against a Windows 10 VM from Kali Linux, then investigated every trace left behind using Sysmon event logs building a complete attack timeline from endpoint evidence alone.
+A hands-on Sysmon investigation lab where I simulated a realistic attack chain against a Windows 10 VM from Kali Linux, then investigated every trace left behind using Sysmon event logs, Building a complete attack timeline from endpoint evidence alone.
 
 This lab was inspired by TCM Security's tutorial:
 "I Hacked Myself & Analyzed It with Sysmon"
@@ -17,13 +17,12 @@ https://www.youtube.com/watch?v=OAuVYbn1m3A
 
 ## 🎯 Objective
 
-Understand why Sysmon provides deeper endpoint visibility than native 
-Windows Event Viewer, by:
+Understand why Sysmon provides deeper endpoint visibility than native Windows Event Viewer, by:
 
-- Executing a realistic multi-stage attack from Kali Linux
-- Capturing forensic evidence through Sysmon event logs
-- Building a complete attack timeline from endpoint logs alone
-- Performing hash-based IOC validation using VirusTotal
+- Executing a realistic multi-stage attack from Kali Linux.
+- Capturing forensic evidence through Sysmon event logs.
+- Building a complete attack timeline from endpoint logs alone.
+- Performing hash-based IOC validation using VirusTotal.
 
 ---
 
@@ -39,8 +38,7 @@ Sysmon told me:
 - What hash it had
 - Which MITRE ATT&CK technique it matched
 
-Same machine. Completely different depth. That difference is what 
-makes or breaks a real SOC investigation.
+Same machine. Completely different depth. That difference is what makes or breaks a real SOC investigation.
 
 ---
 
@@ -65,15 +63,13 @@ makes or breaks a real SOC investigation.
 
 ### Stage 1 – Initial Access (T1204 User Execution)
 
-Generated a Meterpreter reverse HTTP payload disguised as 
-`FreeGamePasses.exe` using Metasploit.
+Generated a Meterpreter reverse HTTP payload disguised as `FreeGamePasses.exe` using Metasploit.
 
 Set up listener on Kali:
 - LHOST: 192.168.1.101
 - LPORT: 31337
 
-Once the victim executed the file, a live Meterpreter session 
-opened on Kali with full remote access.
+Once the victim executed the file, a live Meterpreter session opened on Kali with full remote access.
 
 **Screenshot:** Kali – Meterpreter session established
 
@@ -114,7 +110,7 @@ Ran basic enumeration commands through the Meterpreter shell:
 ### Event ID 15 – File Stream Created
 **MITRE:** T1189 Drive-by Compromise
 
-FreeGamePasses.exe landed in the Downloads folder.Sysmon captured the Zone Identifier showing the file originated from Discord CDN, revealing exactly where 
+FreeGamePasses.exe landed in the Downloads folder. Sysmon captured the Zone Identifier showing the file originated from Discord CDN, revealing exactly where 
 the payload came from.
 
 Hash captured:
@@ -144,7 +140,7 @@ An unknown executable making an outbound connection to a non-standard port is an
 ### Event ID 1 – Process Create (Backdoor Account)
 **MITRE:** T1136 Create Account
 
-Sysmon captured the exact command line used to create the backdoor account — not just that net.exe ran, but the full arguments including the username and password.
+Sysmon captured the exact command line used to create the backdoor account not just that net.exe ran, but the full arguments including the username and password.
 
 Also captured the escalation command adding backdoor to the Administrators group.
 
@@ -256,7 +252,7 @@ Every stage of this attack from initial access to credential dumping was reconst
 
 
 ### 📚 Learning Resource
-Practiced based on TCM Security's Sysmon tutorial.All investigation, documentation and analysis is my own independent work.
+Practiced based on TCM Security's Sysmon tutorial. All investigation, documentation and analysis is my own independent work.
 
 ---
 
