@@ -248,7 +248,7 @@ Every stage of this attack from initial access to credential dumping was reconst
 ## 🔗 Related Labs
 
 - 🛡️ [Wazuh SIEM + Sysmon Integration](https://github.com/rohithbaggu56-dot/Wazuh-SIEM-SOC-Hands-On-Lab)
-- 🏠 [Home SOC Lab](https://github.com/rohithbaggu56-dot/home-soc-lab)
+- 🏠 [Home SOC Lab](https://github.com/rohithbaggu56-dot/Home-SOC-Lab-Detection-Log-Analysis)
 
 
 ### 📚 Learning Resource
