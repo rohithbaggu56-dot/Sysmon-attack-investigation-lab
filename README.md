@@ -87,7 +87,9 @@ Ran basic enumeration commands through the Meterpreter shell:
 - `hostname` – identified target machine
 - `systeminfo` – gathered full system information
 
+**Screenshot:** Kali – discovery commands and backdoor account creation
 
+<img width="1911" height="1080" alt="Screenshot 2026-04-04 140616" src="https://github.com/user-attachments/assets/6c590f52-9a4c-485f-b342-99437752efe1" />
 
 ### Stage 3 – Persistence (T1136 Create Account + T1053 Scheduled Task)
 
@@ -97,6 +99,7 @@ if the session was lost.
 Also created a scheduled task called `backdoortask` to re-execute the payload at every logon under SYSTEM context.
 
 **Screenshot:** Kali – full attack commands visible
+
 <img width="1911" height="1080" alt="Screenshot 2026-04-04 133427" src="https://github.com/user-attachments/assets/ebe05663-9aa3-4306-8bc9-098579604936" />
 
 
@@ -107,11 +110,17 @@ Used Windows' own built-in `certutil.exe` (C:\Windows\System32\certutil.exe) to 
 
 **Why this matters:** certutil.exe is a legitimate trusted Windows binary for certificate management. Using it to download malware is called a LOLBin (Living Off the Land Binary) technique, it avoids triggering alerts because the process itself is trusted by the OS.
 
+**Screenshot:** Kali – certutil downloading Mimikatz via LOLBin
 
+<img width="1911" height="1080" alt="Screenshot 2026-04-04 133427" src="https://github.com/user-attachments/assets/14826aab-20a5-4b6d-af95-fe9c718f5402" />
 
 ### Stage 5 – Credential Access (T1003 OS Credential Dumping)
 
 Executed Mimikatz with `sekurlsa::logonpasswords` to attempt credential extraction from memory.
+
+**Screenshot:** Kali – Mimikatz sekurlsa::logonpasswords executed
+
+<img width="1911" height="1080" alt="Screenshot 2026-04-04 133427" src="https://github.com/user-attachments/assets/14826aab-20a5-4b6d-af95-fe9c718f5402" />
 
 ---
 
