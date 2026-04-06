@@ -76,9 +76,8 @@ Once the victim executed the file, a live Meterpreter session
 opened on Kali with full remote access.
 
 **Screenshot:** Kali – Meterpreter session established
+
 <img width="1911" height="1080" alt="Screenshot 2026-04-04 133346" src="https://github.com/user-attachments/assets/0f3a9d19-3c6e-45b0-9785-b92f7e441326" />
-
-
 
 ### Stage 2 – Discovery (T1018 Remote System Discovery)
 
@@ -91,39 +90,25 @@ Ran basic enumeration commands through the Meterpreter shell:
 
 <img width="1911" height="1080" alt="Screenshot 2026-04-04 140616" src="https://github.com/user-attachments/assets/6c590f52-9a4c-485f-b342-99437752efe1" />
 
-### Stage 3 – Persistence (T1136 Create Account + T1053 Scheduled Task)
+### Stage 3, 4 & 5 – Persistence, LOLBin Abuse & Credential Access
+**(T1053 + T1136 + T1218 + T1202 + T1003)**
 
-Created a hidden backdoor user account and added it to the Administrators group, ensuring continued access even 
-if the session was lost.
+**Persistence – Scheduled Task & Backdoor Account**
+- Created a scheduled task called `backdoortask` to re-execute the payload at every logon under SYSTEM context ensuring the attacker maintains access even after reboots.
+- Also created a hidden backdoor user account and added it to the Administrators group for continued manual access if needed.
 
-Also created a scheduled task called `backdoortask` to re-execute the payload at every logon under SYSTEM context.
+**LOLBin Abuse – certutil.exe**
+- Used Windows' own built-in `certutil.exe` to download Mimikatz from GitHub and renamed to `notmimikatz.exe` to evade basic filename detection.
+- Why this matters: certutil.exe is a legitimate trusted Windows binary for certificate management. Using it to download malware is called a LOLBin (Living Off the Land Binary)technique, it avoids triggering alerts because the process itself is trusted by the OS.
 
-**Screenshot:** Kali – full attack commands visible
+**Credential Access – Mimikatz**
+- Executed Mimikatz with `sekurlsa::logonpasswords` to attempt credential extraction from memory. Even though it was renamed to notmimikatz.exe, Sysmon later caught it through internal file metadata proving renaming alone is not enough to evade detection.
+
+**Screenshot:** Kali – scheduled task creation, certutil LOLBin download and Mimikatz execution all visible in one terminal
 
 <img width="1911" height="1080" alt="Screenshot 2026-04-04 133427" src="https://github.com/user-attachments/assets/ebe05663-9aa3-4306-8bc9-098579604936" />
 
-
-
-### Stage 4 – LOLBin Abuse (T1218 + T1202 Indirect Command Execution)
-
-Used Windows' own built-in `certutil.exe` (C:\Windows\System32\certutil.exe) to download Mimikatz from GitHub and renamed to `notmimikatz.exe` to evade basic filename detection.
-
-**Why this matters:** certutil.exe is a legitimate trusted Windows binary for certificate management. Using it to download malware is called a LOLBin (Living Off the Land Binary) technique, it avoids triggering alerts because the process itself is trusted by the OS.
-
-**Screenshot:** Kali – certutil downloading Mimikatz via LOLBin
-
-<img width="1911" height="1080" alt="Screenshot 2026-04-04 133427" src="https://github.com/user-attachments/assets/14826aab-20a5-4b6d-af95-fe9c718f5402" />
-
-### Stage 5 – Credential Access (T1003 OS Credential Dumping)
-
-Executed Mimikatz with `sekurlsa::logonpasswords` to attempt credential extraction from memory.
-
-**Screenshot:** Kali – Mimikatz sekurlsa::logonpasswords executed
-
-<img width="1911" height="1080" alt="Screenshot 2026-04-04 133427" src="https://github.com/user-attachments/assets/14826aab-20a5-4b6d-af95-fe9c718f5402" />
-
 ---
-
 ## 🔎 Sysmon Investigation – Event by Event
 
 ### Event ID 15 – File Stream Created
